@@ -1,17 +1,17 @@
-var should = require("should");
+const should = require("should");
 
-var fs = require("fs");
-var path = require("path");
+const fs = require("fs");
+const path = require("path");
 
-var runLoader = require("./fakeModuleSystem");
-var twigLoader = require("../");
+const runLoader = require("./fakeModuleSystem");
+const twigLoader = require("../");
 
-var fixtures = path.join(__dirname, "fixtures");
+const fixtures = path.join(__dirname, "fixtures");
 
 describe("from", function() {
   it("should generate correct code", function(done) {
-    var template = path.join(fixtures, "from", "template.html.twig");
-    runLoader(twigLoader, path.join(fixtures, "from"), template, fs.readFileSync(template, "utf-8"), function(err, result) {
+    const template = path.join(fixtures, "from", "template.html.twig");
+    runLoader(twigLoader, path.join(fixtures, "from"), template, fs.readFileSync(template, "utf-8"), (err, result) => {
       if(err) throw err;
 
       result.should.have.type("string");
