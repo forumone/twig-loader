@@ -1,7 +1,7 @@
 {
-  "name": "twig-loader",
+  "name": "@forumone/twig-loader",
   "version": "0.4.2",
-  "description": "Webpack loader for compiling twig.js templates",
+  "description": "Webpack loader for compiling twig.js templates (Forum One's fork)",
   "main": "index.js",
   "scripts": {
     "test": "mocha -R spec"
@@ -23,11 +23,11 @@
     "hasha": "^3.0.0",
     "loader-utils": "^1.1.0",
     "map-cache": "^0.2.2",
-    "schema-utils": "^0.4.5",
+    "schema-utils": "^4.3.3",
     "underscore": "^1.9.1"
   },
   "devDependencies": {
-    "mocha": "^5.2.0",
+    "mocha": "^11.7.5",
     "should": "^13.2.1"
   }
 }
