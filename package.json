@@ -4,7 +4,8 @@
   "description": "Webpack loader for compiling twig.js templates (Forum One's fork)",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha -R spec",
+    "eslint": "eslint lib/**"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,8 @@
     "schema-utils": "^4.3.3"
   },
   "devDependencies": {
+    "@forumone/eslint-config-es5": "^3.0.5",
+    "eslint": "^9.39.1",
     "mocha": "^11.7.5",
     "should": "^13.2.1"
   }
