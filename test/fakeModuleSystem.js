@@ -1,9 +1,9 @@
-var fs = require("fs");
-var path = require("path");
+const fs = require("fs");
+const path = require("path");
 
 module.exports = function runLoader(loader, directory, filename, arg, callback) {
-  var async = true;
-  var loaderContext = {
+  let async = true;
+  const loaderContext = {
     async: function() {
       async = true;
       return callback;
@@ -22,12 +22,12 @@ module.exports = function runLoader(loader, directory, filename, arg, callback) 
     loadModule: function(request, callback) {
       request = request.replace(/^-?!+/, "");
       request = request.split("!");
-      var content = fs.readFileSync(request.pop(), "utf-8");
+      const content = fs.readFileSync(request.pop(), "utf-8");
       if(request[0] && /stringify/.test(request[0]))
         content = JSON.stringify(content);
       return callback(null, content);
     }
   };
-  var res = loader.call(loaderContext, arg);
+  const res = loader.call(loaderContext, arg);
   if(!async) callback(null, res);
 }

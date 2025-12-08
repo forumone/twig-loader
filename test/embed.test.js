@@ -1,17 +1,17 @@
-var should = require("should");
+const should = require("should");
 
-var fs = require("fs");
-var path = require("path");
+const fs = require("fs");
+const path = require("path");
 
-var runLoader = require("./fakeModuleSystem");
-var twigLoader = require("../");
+const runLoader = require("./fakeModuleSystem");
+const twigLoader = require("../");
 
-var fixtures = path.join(__dirname, "fixtures");
+const fixtures = path.join(__dirname, "fixtures");
 
 describe("embed", function() {
   it("should generate proper require embed tag", function(done) {
-    var template = path.join(fixtures, "embed", "template.html.twig");
-    runLoader(twigLoader, path.join(fixtures, "extend"), template, fs.readFileSync(template, "utf-8"), function(err, result) {
+    const template = path.join(fixtures, "embed", "template.html.twig");
+    runLoader(twigLoader, path.join(fixtures, "extend"), template, fs.readFileSync(template, "utf-8"), (err, result) => {
       if(err) throw err;
 
       result.should.have.type("string");
@@ -24,8 +24,8 @@ describe("embed", function() {
   });
 
   it("should generate proper require include tag in block tag", function(done) {
-    var template = path.join(fixtures, "embed", "template.html.twig");
-    runLoader(twigLoader, path.join(fixtures, "extend"), template, fs.readFileSync(template, "utf-8"), function(err, result) {
+    const template = path.join(fixtures, "embed", "template.html.twig");
+    runLoader(twigLoader, path.join(fixtures, "extend"), template, fs.readFileSync(template, "utf-8"), (err, result) => {
       if(err) throw err;
 
       result.should.have.type("string");
