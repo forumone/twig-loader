@@ -1,0 +1,74 @@
+name: Publish package
+
+# Publishes the package to npm when its package.json version is not yet on npm.
+# To release: bump `version` (and update the CHANGELOG) in a PR, then merge to main.
+# If the version is already on npm, the publish is skipped.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Never run two publishes at once, and don't cancel one midway.
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish-npm:
+    # workflow_dispatch can be run on any branch; only ever publish from main.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm trusted publishing (OIDC)
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Reject pre-release versions
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [[ "$VERSION" == *-* ]]; then
+            echo "Pre-release version '$VERSION' is not supported by this workflow." >&2
+            exit 1
+          fi
+
+      - name: Check whether this version is already on npm
+        id: check
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          # Prints nothing if the package or version doesn't exist yet.
+          FOUND=$(npm view "$NAME@$VERSION" version 2>/dev/null || true)
+          if [[ -n "$FOUND" ]]; then
+            echo "$NAME@$VERSION is already published; skipping."
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "$NAME@$VERSION is not on npm; will publish."
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install Dependencies
+        if: steps.check.outputs.needed == 'true'
+        run: npm ci
+
+      # Mocha tests, then eslint (no `posttest` script in this repo).
+      - name: Run tests
+        if: steps.check.outputs.needed == 'true'
+        run: npm test && npm run eslint
+
+      - name: Publish to npm
+        # Authenticates via OIDC trusted publishing; provenance is attached automatically.
+        # Pre-release versions were already rejected above, so this always publishes `latest`.
+        # --access public is required for the first publish of a scoped package.
+        if: steps.check.outputs.needed == 'true'
+        run: npm publish --access public
