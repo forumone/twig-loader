@@ -24,7 +24,6 @@
     "twig": ">=1.15.3 <4"
   },
   "dependencies": {
-    "hasha": "^3.0.0",
     "map-cache": "^0.2.2",
     "schema-utils": "^4.8.2"
   },

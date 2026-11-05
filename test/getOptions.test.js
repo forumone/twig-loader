@@ -88,4 +88,26 @@ describe("getOptions", function() {
       validate(schema, validOptions, { name: "test" });
     }).should.not.throw();
   });
+
+  it("should read options from loader.getOptions() when available (webpack 5)", function() {
+    const loaderContext = {
+      getOptions: function() {
+        return { twigOptions: { namespaces: { test: "./templates" } } };
+      },
+      query: ""
+    };
+    const result = getOptions(loaderContext);
+    result.twigOptions.namespaces.should.have.property("test", "./templates");
+  });
+
+  it("should validate options returned by loader.getOptions()", function() {
+    const loaderContext = {
+      getOptions: function() {
+        return { twigOptions: "not-an-object" };
+      }
+    };
+    (function() {
+      getOptions(loaderContext);
+    }).should.throw();
+  });
 });
