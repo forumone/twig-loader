@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zimmo-be/twig-loader.git"
+    "url": "https://github.com/forumone/twig-loader.git"
   },
-  "author": "Mathieu Maes @ Zimmo.be",
+  "author": "Forum One",
+  "contributors": [
+    "Forum One (https://forumone.com)",
+    "Mathieu Maes @ Zimmo.be"
+  ],
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/zimmo-be/twig-loader/issues"
-  },
-  "homepage": "https://github.com/zimmo-be/twig-loader#readme",
   "engines": {
     "node": ">=22"
   },
